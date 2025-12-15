@@ -1,0 +1,20 @@
+name: bayesian-learning
+channels:
+  - conda-forge
+  - defaults
+  - pytorch-nightly
+dependencies:
+  - python=3.12
+  - pandas
+  - scikit-learn
+  - pip
+  - pyro-ppl
+  - numpy
+  - pgmpy
+  - scikit-learn
+  - seaborn
+  - matplotlib
+  - networkx
+  - pytorch
+  - torchvision
+  - torchaudio
