@@ -1,31 +1,30 @@
-import networkx as nx
 import matplotlib.pyplot as plt
-import seaborn as sns
+import networkx as nx
 
-def visualize_network(model, save_path, feature_names=None):
+def visualize_network(model, save_path):
     plt.figure(figsize=(12, 10))
     di_graph = nx.DiGraph()
     di_graph.add_edges_from(model.edges())
 
-    pos = nx.spring_layout(di_graph, k=2, iterations=50)
+    pos = nx.spring_layout(di_graph)
 
     nx.draw_networkx_nodes(di_graph, pos, node_size=2000,
                            node_color='lightblue',
                            alpha=0.8)
 
-    nx.draw_networkx_edges(di_graph, pos, edge_color='gray',
+    nx.draw_networkx_edges(di_graph, pos, edge_color='black',
                            arrows=True, arrowsize=20)
 
-    # Draw labels
-    if feature_names:
-        labels = {node: feature_names.get(node, node) for node in di_graph.nodes()}
-    else:
-        labels = {node: node for node in di_graph.nodes()}
+    # if feature_names:
+    #     labels = {node: feature_names.get(node, node) for node in di_graph.nodes()}
+    # else:
+
+    labels = {node: node for node in di_graph.nodes()}
 
     nx.draw_networkx_labels(di_graph, pos, labels=labels, font_size=10)
 
     plt.title('Bayesian Network Structure', fontsize=16)
     plt.axis('off')
     plt.tight_layout()
-    plt.show()
     plt.savefig(save_path)
+    plt.show()

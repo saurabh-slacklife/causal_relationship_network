@@ -4,6 +4,7 @@ from network_causal_inference.preprocessing.features_preprocessing import drop_f
 from network_causal_inference.preprocessing.features_preprocessing import discretize_features,encode_categorical_features
 from network_causal_inference.models.structural_learning.bayesian_learning import learn_bayesian_network
 from network_causal_inference.visualization.draw_graph import visualize_network
+from network_causal_inference.config.common_enums import BayesianAlgorithm, ScoringEstimatorClass
 import logging
 logging.basicConfig(
     level=logging.INFO,
@@ -20,11 +21,12 @@ class Test(TestCase):
         describe_data(df)
 
         required_feature_set = ['dur','rate','proto', 'service', 'state', 'spkts', 'dpkts',
-                    'sbytes', 'dbytes', 'sttl', 'dttl', 'label']
+                    'sbytes', 'dbytes', 'sttl', 'dttl']
 
         logging.info('********** Drop specific columns***********')
         df = keep_selected_features_cols(df,required_feature_set)
-        # drop_features_cols(df,['id'])
+        # drop_feature_list = ["id", "attack_cat",'label']
+        # drop_features_cols(df,drop_col_list=drop_feature_list)
         logging.info('********** Describe data after dropping ***********')
         describe_data(df)
         logging.info('********** Drop duplicates ***********')
@@ -42,7 +44,7 @@ class Test(TestCase):
         logging.info('********** Label encoders *********** %s',label_encoders)
         describe_data(df)
         logging.info('********** Structural learning: Learn Bayesian network ***********')
-        bn_model=learn_bayesian_network(df)
+        bn_model=learn_bayesian_network(df,algorithm=BayesianAlgorithm.hc, score_estimator=ScoringEstimatorClass.bic_d)
         visualize_network(bn_model,'../../../data/result/network.png')
 
 
