@@ -2,7 +2,7 @@ from unittest import TestCase
 from data_loader import load_data, describe_data
 from network_causal_inference.preprocessing.features_preprocessing import drop_features_cols,drop_duplicates,find_missing_values, keep_selected_features_cols
 from network_causal_inference.preprocessing.features_preprocessing import discretize_features,encode_categorical_features
-from network_causal_inference.models.structural_learning.bayesian_learning import learn_bayesian_network
+from network_causal_inference.models.structural_learning.bayesian_learning import learn_bayesian_network, learn_bn_cpds, infer, compute_structural_importance
 from network_causal_inference.visualization.draw_graph import visualize_network
 from network_causal_inference.config.common_enums import BayesianAlgorithm, ScoringEstimatorClass
 import logging
@@ -45,6 +45,15 @@ class Test(TestCase):
         describe_data(df)
         logging.info('********** Structural learning: Learn Bayesian network ***********')
         bn_model=learn_bayesian_network(df,algorithm=BayesianAlgorithm.hc, score_estimator=ScoringEstimatorClass.bic_d)
-        visualize_network(bn_model,'../../../data/result/network.png')
+        # visualize_network(bn_model,'../../../data/result/network.png')
+        cpd_learnt_bn_model = learn_bn_cpds(model=bn_model,df=df)
+        print('*************************',cpd_learnt_bn_model)
+        visualize_network(bn_model, '../../../data/result/network_with_cpd.png')
+        result = infer(
+            model=cpd_learnt_bn_model,
+            query_vars=["latency"],
+            evidence={"packet_rate": 100, "queue_size": 50}
+        )
+        print('------------------------',result)
 
 

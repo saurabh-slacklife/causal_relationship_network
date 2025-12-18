@@ -18,3 +18,4 @@ dependencies:
   - pytorch
   - torchvision
   - torchaudio
+  - pygraphviz

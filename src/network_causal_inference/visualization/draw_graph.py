@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-
 def visualize_network(model, save_path):
     plt.figure(figsize=(12, 10))
     di_graph = nx.DiGraph()
