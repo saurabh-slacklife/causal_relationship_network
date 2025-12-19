@@ -1,9 +1,9 @@
 import logging
-from collections import defaultdict
 
-import pandas as pd
 from pandas import DataFrame
 from sklearn.preprocessing import KBinsDiscretizer, LabelEncoder
+
+logger = logging.getLogger(__name__)
 
 def keep_selected_features_cols(df, selected_feature_set: list) -> DataFrame:
     return df[selected_feature_set].copy()
@@ -12,20 +12,20 @@ def drop_features_cols(df: DataFrame, drop_col_list: list):
     df.drop(drop_col_list,axis=1,inplace=True)
 
 def drop_duplicates(df: DataFrame):
-    logging.debug('Total before dropping duplicates: %d',df.duplicated().sum())
+    logger.info('Total before dropping duplicates: %d',df.duplicated().sum())
     df.drop_duplicates(inplace=True)
     df.dropna(inplace=True)
-    logging.debug('Total after dropping duplicates: %d', df.duplicated().sum())
+    logger.info('Total after dropping duplicates: %d', df.duplicated().sum())
 
 def find_missing_values(df: DataFrame):
     missing_data = df.isnull().sum().to_frame().rename(columns={0: "Total No. of Missing Values"})
     missing_data['% of Missing Values'] = round((missing_data['Total No. of Missing Values'] / len(df)) * 100, 2)
-    logging.debug('Missing data: %s', missing_data)
+    logger.info('Missing data: %s', missing_data)
 
 def discretize_features(df: DataFrame, continuous_feature_set: list, kn_bins=5) -> DataFrame:
-    logging.info('Discretize data for continuous feature set: %s', continuous_feature_set)
+    logger.info('Discretize data for continuous feature set: %s', continuous_feature_set)
     continuous_features_cols = [feature for feature in continuous_feature_set if feature in df.columns]
-    logging.info(continuous_features_cols)
+    logger.info(continuous_features_cols)
     # for continuous_feature in continuous_feature_set:
     if continuous_features_cols:
         discretizer = KBinsDiscretizer(n_bins=kn_bins, encode='ordinal', strategy='quantile')
@@ -33,8 +33,8 @@ def discretize_features(df: DataFrame, continuous_feature_set: list, kn_bins=5) 
     return df
     # return df.astype(int)
 
-def encode_categorical_features(df: DataFrame, categorical_feature_set: set) -> dict:
-    logging.debug('Label encoding for categorical feature set: %s', categorical_feature_set)
+def encode_categorical_features(df: DataFrame, categorical_feature_set: list) -> dict:
+    logger.info('Label encoding for categorical feature set: %s', categorical_feature_set)
     label_encoders = dict()
     for categorical_feature in categorical_feature_set:
         if categorical_feature in df.columns:

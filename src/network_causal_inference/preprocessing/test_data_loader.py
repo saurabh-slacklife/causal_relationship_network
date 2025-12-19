@@ -5,55 +5,71 @@ from network_causal_inference.preprocessing.features_preprocessing import discre
 from network_causal_inference.models.structural_learning.bayesian_learning import learn_bayesian_network, learn_bn_cpds, infer, compute_structural_importance
 from network_causal_inference.visualization.draw_graph import visualize_network
 from network_causal_inference.config.common_enums import BayesianAlgorithm, ScoringEstimatorClass
+from pgmpy.inference import CausalInference, VariableElimination, DBNInference
 import logging
+from datetime import datetime
+
+log_filename = datetime.now().strftime('causal_inference_log_%H:%M-%d-%m-%Y.log')
+
 logging.basicConfig(
+    filename='./../../data/result/logs/'+log_filename,
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    encoding='utf-8'
 )
+
+logger = logging.getLogger(__name__)
 
 class Test(TestCase):
     def test_load_data(self):
-        logging.info('********** Load data ***********')
+        logger.info('********** Load data ***********')
         # feature_set_df = load_data(path='../../../data/features/',encoding='cp1252')
         df = load_data()
         # df.columns = feature_set_df['Name']
-        logging.info('********** Describe data ***********')
+        logger.info('********** Describe data ***********')
         describe_data(df)
 
         required_feature_set = ['dur','rate','proto', 'service', 'state', 'spkts', 'dpkts',
                     'sbytes', 'dbytes', 'sttl', 'dttl']
 
-        logging.info('********** Drop specific columns***********')
+        logger.info('********** Drop specific columns***********')
         df = keep_selected_features_cols(df,required_feature_set)
         # drop_feature_list = ["id", "attack_cat",'label']
         # drop_features_cols(df,drop_col_list=drop_feature_list)
-        logging.info('********** Describe data after dropping ***********')
+        logger.info('********** Describe data after dropping ***********')
         describe_data(df)
-        logging.info('********** Drop duplicates ***********')
+        logger.info('********** Drop duplicates ***********')
         drop_duplicates(df)
-        logging.info('********** Describe data after dropping duplicates ***********')
-        logging.info('********** Find missing data that is null/none ***********')
+        logger.info('********** Describe data after dropping duplicates ***********')
+        logger.info('********** Find missing data that is null/none ***********')
         find_missing_values(df)
 
         continuous_feature_set = ['dur', 'sbytes', 'dbytes', 'sttl','rate','dttl']
+        categorical_feature_set = ['proto', 'service', 'state']
+        combined_feature_list = continuous_feature_set + categorical_feature_set
         df = discretize_features(df, continuous_feature_set)
 
-        categorical_feature_set={'proto', 'service', 'state'}
         label_encoders=encode_categorical_features(df,categorical_feature_set)
 
-        logging.info('********** Label encoders *********** %s',label_encoders)
+        logger.info('********** Label encoders *********** %s',label_encoders)
         describe_data(df)
-        logging.info('********** Structural learning: Learn Bayesian network ***********')
+        logger.info('********** Structural learning: Learn Bayesian network ***********')
         bn_model=learn_bayesian_network(df,algorithm=BayesianAlgorithm.hc, score_estimator=ScoringEstimatorClass.bic_d)
         # visualize_network(bn_model,'../../../data/result/network.png')
         cpd_learnt_bn_model = learn_bn_cpds(model=bn_model,df=df)
-        print('*************************',cpd_learnt_bn_model)
-        visualize_network(bn_model, '../../../data/result/network_with_cpd.png')
-        result = infer(
-            model=cpd_learnt_bn_model,
-            query_vars=["latency"],
-            evidence={"packet_rate": 100, "queue_size": 50}
-        )
-        print('------------------------',result)
+        logger.info('********** Learnt CPD BN Model: %s ***********',cpd_learnt_bn_model)
+        # visualize_network(bn_model, '../../../data/result/network_with_cpd.png')
+        for feature in combined_feature_list:
+            logger.info('********** Inferrene starting for %s ***********', feature)
+            cpds = infer(
+                model=cpd_learnt_bn_model,
+                inference_model=CausalInference,
+                query_vars=[feature],
+                # evidence={"dbytes": 1.0, "sttl": 1.0}
+            )
+            logger.info('********** Inferred CPDs BN Model for %s: %s ***********',feature, cpds)
+        compute_structural_importance(cpd_learnt_bn_model)
+
 
 
