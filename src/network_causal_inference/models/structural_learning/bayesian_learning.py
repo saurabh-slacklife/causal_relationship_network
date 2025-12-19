@@ -2,7 +2,7 @@ from pandas import DataFrame
 from network_causal_inference.config.common_enums import BayesianAlgorithm, ScoringEstimatorClass, PriorType
 from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.estimators import ParameterEstimator, BayesianEstimator
-from pgmpy.inference import Inference, VariableElimination
+from pgmpy.inference import Inference, VariableElimination, CausalInference
 import networkx as nx
 import pandas as pd
 import warnings
@@ -66,3 +66,7 @@ def compute_structural_importance(model) -> dict:
                       )
     logger.info('Structurl importance: %s',result_dict)
     return result_dict
+
+def network_congestion_learning(model):
+    infer_model=CausalInference(model)
+    return infer_model.query(variables=['rate'],evidence={'spkts':10646},show_progress=True)

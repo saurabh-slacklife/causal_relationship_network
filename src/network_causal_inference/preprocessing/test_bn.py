@@ -2,7 +2,7 @@ from unittest import TestCase
 from data_loader import load_data, describe_data
 from network_causal_inference.preprocessing.features_preprocessing import drop_features_cols,drop_duplicates,find_missing_values, keep_selected_features_cols
 from network_causal_inference.preprocessing.features_preprocessing import discretize_features,encode_categorical_features
-from network_causal_inference.models.structural_learning.bayesian_learning import learn_bayesian_network, learn_bn_cpds, infer, compute_structural_importance
+from network_causal_inference.models.structural_learning.bayesian_learning import learn_bayesian_network, learn_bn_cpds, infer, compute_structural_importance,network_congestion_learning
 from network_causal_inference.visualization.draw_graph import visualize_network
 from network_causal_inference.config.common_enums import BayesianAlgorithm, ScoringEstimatorClass
 from pgmpy.inference import CausalInference, VariableElimination, DBNInference
@@ -47,7 +47,6 @@ class Test(TestCase):
 
         continuous_feature_set = ['dur', 'sbytes', 'dbytes', 'sttl','rate','dttl']
         categorical_feature_set = ['proto', 'service', 'state']
-        combined_feature_list = continuous_feature_set + categorical_feature_set
         df = discretize_features(df, continuous_feature_set)
 
         label_encoders=encode_categorical_features(df,categorical_feature_set)
@@ -60,7 +59,7 @@ class Test(TestCase):
         cpd_learnt_bn_model = learn_bn_cpds(model=bn_model,df=df)
         logger.info('********** Learnt CPD BN Model: %s ***********',cpd_learnt_bn_model)
         # visualize_network(bn_model, '../../../data/result/network_with_cpd.png')
-        for feature in combined_feature_list:
+        for feature in required_feature_set:
             logger.info('********** Inferrene starting for %s ***********', feature)
             cpds = infer(
                 model=cpd_learnt_bn_model,
@@ -70,6 +69,12 @@ class Test(TestCase):
             )
             logger.info('********** Inferred CPDs BN Model for %s: %s ***********',feature, cpds)
         compute_structural_importance(cpd_learnt_bn_model)
+
+        logger.info('*** Inferrene starting for network congestion/degradation for P(rate|spkts=high-10646)***********')
+        nw_congestion_cpd=network_congestion_learning(cpd_learnt_bn_model)
+        logger.info('*** Inferrene starting for network congestion/degradation for P(rate|spkts=high-10646): %s ***********', nw_congestion_cpd)
+
+
 
 
 
