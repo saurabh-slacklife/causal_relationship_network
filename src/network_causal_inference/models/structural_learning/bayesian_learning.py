@@ -1,4 +1,6 @@
 from pandas import DataFrame
+from pgmpy.factors.discrete import DiscreteFactor
+from pgmpy.base import DAG
 from network_causal_inference.config.common_enums import BayesianAlgorithm, ScoringEstimatorClass, PriorType
 from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.estimators import ParameterEstimator, BayesianEstimator
@@ -7,6 +9,7 @@ import networkx as nx
 import pandas as pd
 import warnings
 from pgmpy.global_vars import config
+from pathlib import Path
 import logging
 
 config.set_backend("numpy")
@@ -39,9 +42,10 @@ def learn_bayesian_network(df, algorithm=BayesianAlgorithm,
     return estimated_bayesian_network_model
 
 
-def learn_bn_cpds(model: DiscreteBayesianNetwork, df: DataFrame,
-                  estimator: ParameterEstimator = BayesianEstimator, prior_type: PriorType = PriorType.bdeu):
-    fitted_model=model.fit(
+def learn_bn_cpds(dbn_dag_model: DAG, df: DataFrame,
+                  estimator: ParameterEstimator = BayesianEstimator,
+                  prior_type: PriorType = PriorType.bdeu) -> DiscreteBayesianNetwork:
+    fitted_model = dbn_dag_model.fit(
         df,
         estimator=estimator,
         prior_type=prior_type.value,
@@ -51,15 +55,15 @@ def learn_bn_cpds(model: DiscreteBayesianNetwork, df: DataFrame,
     return fitted_model
 
 
-def infer(model, query_vars: list,
+def infer(dbn_model: DiscreteBayesianNetwork, query_vars: list,
           inference_model: Inference = VariableElimination, evidence: dict = None,
           show_progress: bool = True):
-    engine = inference_model(model)
+    engine = inference_model(dbn_model)
     return engine.query(variables=query_vars, show_progress=show_progress, evidence=evidence, )
 
 
-def compute_structural_importance(model) -> dict:
-    di_graph = nx.DiGraph(model.edges())
+def compute_structural_importance(dbn_model: DiscreteBayesianNetwork) -> dict:
+    di_graph = nx.DiGraph(dbn_model.edges())
     result_dict= dict(degree_centrality=nx.degree_centrality(di_graph),
                       betweenness_centrality=nx.betweenness_centrality(di_graph),
                       closeness_centrality=nx.closeness_centrality(di_graph)
@@ -67,6 +71,20 @@ def compute_structural_importance(model) -> dict:
     logger.info('Structurl importance: %s',result_dict)
     return result_dict
 
-def network_congestion_learning(model):
-    infer_model=CausalInference(model)
-    return infer_model.query(variables=['rate'],evidence={'spkts':10646},show_progress=True)
+def network_congestion_learning(dbn_model: DiscreteBayesianNetwork) -> DiscreteFactor:
+    infered_dbn_model=CausalInference(dbn_model)
+    return infered_dbn_model.query(variables=['rate'],evidence={'spkts':10646},show_progress=True)
+
+def check_model_for_errors(dbn_model: DiscreteBayesianNetwork) -> bool:
+    return dbn_model.check_model()
+
+def get_bn_immoralities(dbn_model: DiscreteBayesianNetwork) -> set:
+    return dbn_model.get_immoralities()
+
+def get_feature_i_map(dbn_model: DiscreteBayesianNetwork, features: list) -> dict:
+    return dbn_model.local_independencies(features)
+
+def save_model(dbn_model: DiscreteBayesianNetwork, file_name:str):
+    save_path = '/Users/saurabh/codeprojects/causal_relationship_network/data/result/models/' + file_name
+    logger.info('Saving to path: %s',save_path)
+    dbn_model.save(save_path)

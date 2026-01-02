@@ -2,9 +2,10 @@ from unittest import TestCase
 from data_loader import load_data, describe_data
 from network_causal_inference.preprocessing.features_preprocessing import drop_features_cols,drop_duplicates,find_missing_values, keep_selected_features_cols
 from network_causal_inference.preprocessing.features_preprocessing import discretize_features,encode_categorical_features
-from network_causal_inference.models.structural_learning.bayesian_learning import learn_bayesian_network, learn_bn_cpds, infer, compute_structural_importance,network_congestion_learning
-from network_causal_inference.visualization.draw_graph import visualize_network
+from network_causal_inference.models.structural_learning import bayesian_learning as bn_learning
+from network_causal_inference.visualization.draw_graph import visualize_network, visualize_network_daft
 from network_causal_inference.config.common_enums import BayesianAlgorithm, ScoringEstimatorClass
+from network_causal_inference.models.structural_learning import structural_bn_learn as bn_learn
 from pgmpy.inference import CausalInference, VariableElimination, DBNInference
 import logging
 from datetime import datetime
@@ -22,7 +23,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class Test(TestCase):
-    def test_load_data(self):
+
+    def test_learn_bn(self):
         logger.info('********** Load data ***********')
         # feature_set_df = load_data(path='../../../data/features/',encoding='cp1252')
         df = load_data()
@@ -54,27 +56,44 @@ class Test(TestCase):
         logger.info('********** Label encoders *********** %s',label_encoders)
         describe_data(df)
         logger.info('********** Structural learning: Learn Bayesian network ***********')
-        bn_model=learn_bayesian_network(df,algorithm=BayesianAlgorithm.hc, score_estimator=ScoringEstimatorClass.bic_d)
+
+        dbn_hc_model = bn_learn.hill_climb_structural_learn(df.copy())
+        # dbn_pc_model = bn_learn.pc_structural_learn(df.copy())
         # visualize_network(bn_model,'../../../data/result/network.png')
-        cpd_learnt_bn_model = learn_bn_cpds(model=bn_model,df=df)
+
+        cpd_learnt_bn_model = bn_learning.learn_bn_cpds(dbn_dag_model=dbn_hc_model,df=df)
         logger.info('********** Learnt CPD BN Model: %s ***********',cpd_learnt_bn_model)
-        # visualize_network(bn_model, '../../../data/result/network_with_cpd.png')
+
+        visualize_network(cpd_learnt_bn_model, save_path='../../../data/result/network.png',name='HillClimbSearch')
+
+        bn_learning.save_model(dbn_model=cpd_learnt_bn_model, file_name='dbn_hc_model')
+
         for feature in required_feature_set:
             logger.info('********** Inferrene starting for %s ***********', feature)
-            cpds = infer(
-                model=cpd_learnt_bn_model,
+            cpds = bn_learning.infer(
+                dbn_model=cpd_learnt_bn_model,
                 inference_model=CausalInference,
                 query_vars=[feature],
                 # evidence={"dbytes": 1.0, "sttl": 1.0}
             )
             logger.info('********** Inferred CPDs BN Model for %s: %s ***********',feature, cpds)
-        compute_structural_importance(cpd_learnt_bn_model)
+
+        bn_learning.compute_structural_importance(cpd_learnt_bn_model)
+
+
+        min_i_map = bn_learning.get_feature_i_map(dbn_model=cpd_learnt_bn_model,features=required_feature_set)
+        logger.info('***minimal I-map *******')
+        logger.info('%s',min_i_map)
+
+        v_structural_immoralities = bn_learning.get_bn_immoralities(dbn_model=cpd_learnt_bn_model)
+        logger.info('***V-structural immoralities *******')
+        logger.info('%s', v_structural_immoralities)
+
+
+
 
         logger.info('*** Inferrene starting for network congestion/degradation for P(rate|spkts=high-10646)***********')
-        nw_congestion_cpd=network_congestion_learning(cpd_learnt_bn_model)
+        nw_congestion_cpd=bn_learning.network_congestion_learning(cpd_learnt_bn_model)
         logger.info('*** Inferrene starting for network congestion/degradation for P(rate|spkts=high-10646): %s ***********', nw_congestion_cpd)
-
-
-
 
 

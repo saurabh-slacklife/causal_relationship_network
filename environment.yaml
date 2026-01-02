@@ -10,12 +10,11 @@ dependencies:
   - pip
   - pyro-ppl
   - numpy
+  - scapy
   - pgmpy
   - scikit-learn
   - seaborn
   - matplotlib
-  - networkx
-  - pytorch
-  - torchvision
-  - torchaudio
   - pygraphviz
+  - daft-pgm
+  - networkx
