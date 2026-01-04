@@ -35,10 +35,13 @@ def visualize_network(model: DiscreteBayesianNetwork, name: str, save_path: str)
     # nx.draw_networkx_labels(di_graph, pos, labels=labels, font_size=10)
 
     arrow_fancy=ArrowStyle.Fancy(head_length=.4, head_width=.4, tail_width=.1)
+    # arrow_fancy=ArrowStyle.Simple(head_length=.4, head_width=.4, tail_width=.1)
     nx.draw_networkx(di_graph, pos=pos, with_labels=True,
-                     arrows=True, arrowstyle=arrow_fancy,alpha=1.0,
-                     # arrowsize=20,
-                     node_color='lightblue', cmap=colormaps)
+                     arrows=True, arrowstyle=arrow_fancy,alpha=0.6,
+                     arrowsize=30,
+                     width=1.0,
+                     node_size=2000,
+                     node_color='lightblue')
     label = 'Bayesian Network Structure: '+ name
     plt.title(label=label, fontsize=16)
     plt.axis('off')

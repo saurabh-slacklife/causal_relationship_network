@@ -5,7 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def hill_climb_structural_learn(df: DataFrame, max_indegree=None) -> DAG:
+def hill_climb_structural_global_learn(df: DataFrame, max_indegree=None) -> DAG:
     hc = HillClimbSearch(df)
     hc_model = hc.estimate(scoring_method=BIC(df),
                         start_dag=None,
@@ -18,7 +18,7 @@ def hill_climb_structural_learn(df: DataFrame, max_indegree=None) -> DAG:
 
     return hc_model
 
-def pc_structural_learn(df: DataFrame, max_indegree=None) -> DAG:
+def pc_structural_local_learn(df: DataFrame, max_indegree=None) -> DAG:
     pc = PC(data=df,
             start_dag=None,
             max_indegree=max_indegree,

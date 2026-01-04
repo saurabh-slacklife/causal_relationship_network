@@ -11,6 +11,7 @@ import warnings
 from pgmpy.global_vars import config
 from pathlib import Path
 import logging
+import pprint
 
 config.set_backend("numpy")
 logger = logging.getLogger(__name__)
@@ -51,7 +52,7 @@ def learn_bn_cpds(dbn_dag_model: DAG, df: DataFrame,
         prior_type=prior_type.value,
         # equivalent_sample_size=10
     )
-    print(fitted_model.get_cpds())
+
     return fitted_model
 
 
@@ -68,12 +69,12 @@ def compute_structural_importance(dbn_model: DiscreteBayesianNetwork) -> dict:
                       betweenness_centrality=nx.betweenness_centrality(di_graph),
                       closeness_centrality=nx.closeness_centrality(di_graph)
                       )
-    logger.info('Structurl importance: %s',result_dict)
+    logger.info('********** Structurl importance: ********** \n %s',pprint.pformat(result_dict))
     return result_dict
 
-def network_congestion_learning(dbn_model: DiscreteBayesianNetwork) -> DiscreteFactor:
+def network_congestion_learning(dbn_model: DiscreteBayesianNetwork, variables: list, evidence: dict) -> DiscreteFactor:
     infered_dbn_model=CausalInference(dbn_model)
-    return infered_dbn_model.query(variables=['rate'],evidence={'spkts':10646},show_progress=True)
+    return infered_dbn_model.query(variables=variables,evidence=evidence,show_progress=True)
 
 def check_model_for_errors(dbn_model: DiscreteBayesianNetwork) -> bool:
     return dbn_model.check_model()
