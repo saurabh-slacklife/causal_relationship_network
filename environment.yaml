@@ -18,3 +18,4 @@ dependencies:
   - pygraphviz
   - daft-pgm
   - networkx
+  - tabulate

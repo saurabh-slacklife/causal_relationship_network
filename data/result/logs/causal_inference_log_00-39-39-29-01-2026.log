@@ -1,0 +1,664 @@
+2026-01-29 00:39:39 - test_bn - INFO - ********** Load data ***********
+2026-01-29 00:39:40 - test_bn - INFO - ********** Describe data ***********
+2026-01-29 00:39:40 - data_loader - INFO - Shape: (257673, 45) Features: Index(['id', 'dur', 'proto', 'service', 'state', 'spkts', 'dpkts', 'sbytes',
+       'dbytes', 'rate', 'sttl', 'dttl', 'sload', 'dload', 'sloss', 'dloss',
+       'sinpkt', 'dinpkt', 'sjit', 'djit', 'swin', 'stcpb', 'dtcpb', 'dwin',
+       'tcprtt', 'synack', 'ackdat', 'smean', 'dmean', 'trans_depth',
+       'response_body_len', 'ct_srv_src', 'ct_state_ttl', 'ct_dst_ltm',
+       'ct_src_dport_ltm', 'ct_dst_sport_ltm', 'ct_dst_src_ltm',
+       'is_ftp_login', 'ct_ftp_cmd', 'ct_flw_http_mthd', 'ct_src_ltm',
+       'ct_srv_dst', 'is_sm_ips_ports', 'attack_cat', 'label'],
+      dtype='str')
+2026-01-29 00:39:40 - data_loader - INFO - Statistical summary:                    id            dur  ... attack_cat          label
+count   257673.000000  257673.000000  ...     257673  257673.000000
+unique            NaN            NaN  ...         10            NaN
+top               NaN            NaN  ...     Normal            NaN
+freq              NaN            NaN  ...      93000            NaN
+mean     72811.823858       1.246715  ...        NaN       0.639077
+std      48929.917641       5.974305  ...        NaN       0.480269
+min          1.000000       0.000000  ...        NaN       0.000000
+25%      32210.000000       0.000008  ...        NaN       0.000000
+50%      64419.000000       0.004285  ...        NaN       1.000000
+75%     110923.000000       0.685777  ...        NaN       1.000000
+max     175341.000000      59.999989  ...        NaN       1.000000
+
+[11 rows x 45 columns]
+2026-01-29 00:39:40 - data_loader - INFO - Number of Numerical: 41 and categorical: 4 features
+2026-01-29 00:39:40 - data_loader - INFO - Features summary: None
+2026-01-29 00:39:40 - data_loader - INFO - Head:    id       dur proto service  ... ct_srv_dst  is_sm_ips_ports  attack_cat  label
+0   1  0.000011   udp       -  ...          2                0      Normal      0
+1   2  0.000008   udp       -  ...          2                0      Normal      0
+2   3  0.000005   udp       -  ...          3                0      Normal      0
+3   4  0.000006   udp       -  ...          3                0      Normal      0
+4   5  0.000010   udp       -  ...          3                0      Normal      0
+
+[5 rows x 45 columns]
+2026-01-29 00:39:40 - test_bn - INFO - ********** Drop specific columns***********
+2026-01-29 00:39:40 - test_bn - INFO - ********** Describe data after dropping ***********
+2026-01-29 00:39:40 - data_loader - INFO - Shape: (257673, 11) Features: Index(['dur', 'rate', 'proto', 'service', 'state', 'spkts', 'dpkts', 'sbytes',
+       'dbytes', 'sttl', 'dttl'],
+      dtype='str')
+2026-01-29 00:39:40 - data_loader - INFO - Statistical summary:                   dur          rate  ...           sttl           dttl
+count   257673.000000  2.576730e+05  ...  257673.000000  257673.000000
+unique            NaN           NaN  ...            NaN            NaN
+top               NaN           NaN  ...            NaN            NaN
+freq              NaN           NaN  ...            NaN            NaN
+mean         1.246715  9.125391e+04  ...     180.000931      84.754957
+std          5.974305  1.603446e+05  ...     102.488268     112.762131
+min          0.000000  0.000000e+00  ...       0.000000       0.000000
+25%          0.000008  3.078928e+01  ...      62.000000       0.000000
+50%          0.004285  2.955665e+03  ...     254.000000      29.000000
+75%          0.685777  1.250000e+05  ...     254.000000     252.000000
+max         59.999989  1.000000e+06  ...     255.000000     254.000000
+
+[11 rows x 11 columns]
+2026-01-29 00:39:40 - data_loader - INFO - Number of Numerical: 8 and categorical: 3 features
+2026-01-29 00:39:40 - data_loader - INFO - Features summary: None
+2026-01-29 00:39:40 - data_loader - INFO - Head:         dur         rate proto service state  ...  dpkts  sbytes  dbytes  sttl  dttl
+0  0.000011   90909.0902   udp       -   INT  ...      0     496       0   254     0
+1  0.000008  125000.0003   udp       -   INT  ...      0    1762       0   254     0
+2  0.000005  200000.0051   udp       -   INT  ...      0    1068       0   254     0
+3  0.000006  166666.6608   udp       -   INT  ...      0     900       0   254     0
+4  0.000010  100000.0025   udp       -   INT  ...      0    2126       0   254     0
+
+[5 rows x 11 columns]
+2026-01-29 00:39:40 - test_bn - INFO - ********** Drop duplicates ***********
+2026-01-29 00:39:41 - network_causal_inference.preprocessing.features_preprocessing - INFO - Total before dropping duplicates: 133412
+2026-01-29 00:39:41 - network_causal_inference.preprocessing.features_preprocessing - INFO - Total after dropping duplicates: 0
+2026-01-29 00:39:41 - test_bn - INFO - ********** Describe data after dropping duplicates ***********
+2026-01-29 00:39:41 - test_bn - INFO - ********** Find missing data that is null/none ***********
+2026-01-29 00:39:41 - network_causal_inference.preprocessing.features_preprocessing - INFO - Missing data:          Total No. of Missing Values  % of Missing Values
+dur                                0                  0.0
+rate                               0                  0.0
+proto                              0                  0.0
+service                            0                  0.0
+state                              0                  0.0
+spkts                              0                  0.0
+dpkts                              0                  0.0
+sbytes                             0                  0.0
+dbytes                             0                  0.0
+sttl                               0                  0.0
+dttl                               0                  0.0
+2026-01-29 00:39:41 - network_causal_inference.preprocessing.features_preprocessing - INFO - Discretize data for continuous feature set: ['dur', 'sbytes', 'dbytes', 'sttl', 'rate', 'dttl']
+2026-01-29 00:39:41 - network_causal_inference.preprocessing.features_preprocessing - INFO - ['dur', 'sbytes', 'dbytes', 'sttl', 'rate', 'dttl']
+2026-01-29 00:39:41 - network_causal_inference.preprocessing.features_preprocessing - INFO - Discretize data for continuous feature: ['dur', 'sbytes', 'dbytes', 'sttl', 'rate', 'dttl']
+2026-01-29 00:39:41 - network_causal_inference.preprocessing.features_preprocessing - INFO - Label encoding for categorical feature set: ['proto', 'service', 'state']
+2026-01-29 00:39:41 - test_bn - INFO - ********** Label encoders *********** {'proto': LabelEncoder(), 'service': LabelEncoder(), 'state': LabelEncoder()}
+2026-01-29 00:39:41 - data_loader - INFO - Shape: (124261, 11) Features: Index(['dur', 'rate', 'proto', 'service', 'state', 'spkts', 'dpkts', 'sbytes',
+       'dbytes', 'sttl', 'dttl'],
+      dtype='str')
+2026-01-29 00:39:41 - data_loader - INFO - Statistical summary:                  dur           rate  ...           sttl           dttl
+count  124261.000000  124261.000000  ...  124261.000000  124261.000000
+mean        2.000024       2.000016  ...       2.094615       2.146080
+std         1.414216       1.414225  ...       0.894151       1.061168
+min         0.000000       0.000000  ...       0.000000       0.000000
+25%         1.000000       1.000000  ...       1.000000       1.000000
+50%         2.000000       2.000000  ...       2.000000       3.000000
+75%         3.000000       3.000000  ...       3.000000       3.000000
+max         4.000000       4.000000  ...       3.000000       3.000000
+
+[8 rows x 11 columns]
+2026-01-29 00:39:41 - data_loader - INFO - Number of Numerical: 11 and categorical: 0 features
+2026-01-29 00:39:41 - data_loader - INFO - Features summary: None
+2026-01-29 00:39:41 - data_loader - INFO - Head:    dur  rate  proto  service  state  spkts  dpkts  sbytes  dbytes  sttl  dttl
+0  0.0   4.0    119        0      5      2      0     0.0     0.0   3.0   0.0
+1  0.0   4.0    119        0      5      2      0     3.0     0.0   3.0   0.0
+2  0.0   4.0    119        0      5      2      0     2.0     0.0   3.0   0.0
+3  0.0   4.0    119        0      5      2      0     1.0     0.0   3.0   0.0
+4  0.0   4.0    119        0      5      2      0     3.0     0.0   3.0   0.0
+2026-01-29 00:39:41 - test_bn - INFO - ********** Structural learning: Learn Bayesian network: GES ***********
+2026-01-29 00:39:41 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:39:41 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:39:41 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:39:43 - network_causal_inference.models.structural_learning.hill_climb_learn - INFO - Learned BayesianNetwork_GES structure with edges=17, nodes=11
+2026-01-29 00:39:43 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:39:43 - test_bn - INFO - ********** Learnt CPD BN Model***********
+ [<TabularCPD representing P(dur:5 | dbytes:5, dttl:4, service:13) at 0x162038b00>,
+ <TabularCPD representing P(rate:5 | dbytes:5, dur:5, sbytes:5) at 0x16203adb0>,
+ <TabularCPD representing P(service:13 | dbytes:5, sbytes:5, sttl:4) at 0x16203b5c0>,
+ <TabularCPD representing P(state:11) at 0x16203d9d0>,
+ <TabularCPD representing P(dbytes:5 | state:11) at 0x16203cf80>,
+ <TabularCPD representing P(proto:133 | state:11) at 0x16203d1c0>,
+ <TabularCPD representing P(dttl:4 | state:11, sttl:4) at 0x16203c4a0>,
+ <TabularCPD representing P(dpkts:627 | dbytes:5) at 0x16203d100>,
+ <TabularCPD representing P(spkts:646 | dbytes:5) at 0x16203d190>,
+ <TabularCPD representing P(sbytes:5 | spkts:646) at 0x16203cb60>,
+ <TabularCPD representing P(sttl:4 | dpkts:627) at 0x16203cb90>]
+2026-01-29 00:39:45 - network_causal_inference.models.structural_learning.bayesian_learning - INFO - Saving to path: /Users/saurabh/codeprojects/causal_relationship_network/data/result/models/dbn_hc_model_ges_28
+2026-01-29 00:39:45 - network_causal_inference.models.structural_learning.bayesian_learning - INFO - ********** Structurl importance: ********** 
+ {'betweenness_centrality': {'dbytes': 0.07222222222222223,
+                            'dpkts': 0.03333333333333333,
+                            'dttl': 0.02777777777777778,
+                            'dur': 0.044444444444444446,
+                            'proto': 0.0,
+                            'rate': 0.0,
+                            'sbytes': 0.03333333333333333,
+                            'service': 0.044444444444444446,
+                            'spkts': 0.022222222222222223,
+                            'state': 0.0,
+                            'sttl': 0.05555555555555556},
+ 'closeness_centrality': {'dbytes': 0.1,
+                          'dpkts': 0.13333333333333333,
+                          'dttl': 0.22857142857142856,
+                          'dur': 0.4266666666666667,
+                          'proto': 0.1,
+                          'rate': 0.45,
+                          'sbytes': 0.15,
+                          'service': 0.39999999999999997,
+                          'spkts': 0.13333333333333333,
+                          'state': 0.0,
+                          'sttl': 0.15},
+ 'degree_centrality': {'dbytes': 0.6000000000000001,
+                       'dpkts': 0.2,
+                       'dttl': 0.30000000000000004,
+                       'dur': 0.4,
+                       'proto': 0.1,
+                       'rate': 0.30000000000000004,
+                       'sbytes': 0.30000000000000004,
+                       'service': 0.4,
+                       'spkts': 0.2,
+                       'state': 0.30000000000000004,
+                       'sttl': 0.30000000000000004}}
+2026-01-29 00:39:45 - test_bn - INFO - ********** Minimal I-map ********** 
+ (dur ⟂ dpkts, sttl, state, spkts, sbytes, proto | service, dttl, dbytes)
+(rate ⟂ dpkts, sttl, state, spkts, service, dttl, proto | sbytes, dur, dbytes)
+(proto ⟂ dpkts, sttl, sbytes, dbytes, dttl, spkts, dur, service, rate | state)
+(service ⟂ dpkts, state, spkts, dttl, proto | sbytes, sttl, dbytes)
+(spkts ⟂ dpkts, sttl, state, dttl, proto | dbytes)
+(dpkts ⟂ spkts, sbytes, state, proto | dbytes)
+(sbytes ⟂ dpkts, sttl, state, dbytes, dttl, proto | spkts)
+(dbytes ⟂ proto | state)
+(sttl ⟂ sbytes, state, spkts, dbytes, proto | dpkts)
+(dttl ⟂ dpkts, sbytes, spkts, dbytes, service, proto | sttl, state)
+2026-01-29 00:39:45 - test_bn - INFO - ********** V-structural immoralities **********
+ {'dbytes': [],
+ 'dpkts': [],
+ 'dttl': [('state', 'sttl')],
+ 'dur': [('dttl', 'service'), ('dbytes', 'dttl')],
+ 'proto': [],
+ 'rate': [('dur', 'sbytes'), ('dbytes', 'sbytes')],
+ 'sbytes': [],
+ 'service': [('dbytes', 'sbytes'), ('sbytes', 'sttl'), ('dbytes', 'sttl')],
+ 'spkts': [],
+ 'state': [],
+ 'sttl': []}
+2026-01-29 00:39:45 - test_bn - INFO - **************Metrics and Score evalkuation start*****************
+2026-01-29 00:39:49 - test_bn - INFO - Fisher_Score:0.0
+2026-01-29 00:39:49 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:39:50 - test_bn - INFO - structure_Score:-3510206.252986488
+2026-01-29 00:39:50 - test_bn - INFO - correlation_score:0.0
+2026-01-29 00:39:52 - test_bn - INFO - conditional_independencies:          u        v                cond_vars  p-value
+0       dur    state  [service, dttl, dbytes]      0.0
+1       dur    proto  [service, dttl, dbytes]      0.0
+2       dur    spkts  [service, dttl, dbytes]      0.0
+3       dur   sbytes  [service, dttl, dbytes]      0.0
+4       dur    dpkts  [service, dttl, dbytes]      0.0
+5       dur     sttl  [service, dttl, dbytes]      0.0
+6      rate  service    [sbytes, dur, dbytes]      0.0
+7      rate    state    [sbytes, dur, dbytes]      0.0
+8      rate    proto                  [state]      0.0
+9      rate     dttl    [sbytes, dur, dbytes]      0.0
+10     rate    spkts         [sbytes, dbytes]      0.0
+11     rate    dpkts    [sbytes, dur, dbytes]      0.0
+12     rate     sttl    [sbytes, dur, dbytes]      0.0
+13  service    state                 [dbytes]      0.0
+14  service    proto                 [dbytes]      0.0
+15  service     dttl           [sttl, dbytes]      0.0
+16  service    spkts         [sbytes, dbytes]      0.0
+17  service    dpkts           [sttl, dbytes]      0.0
+18    state    spkts                 [dbytes]      0.0
+19    state   sbytes                  [spkts]      0.0
+20    state    dpkts                 [dbytes]      0.0
+21    state     sttl                  [dpkts]      0.0
+22   dbytes    proto                  [state]      0.0
+23   dbytes     dttl            [sttl, state]      0.0
+24   dbytes   sbytes                  [spkts]      0.0
+25   dbytes     sttl                  [dpkts]      0.0
+26    proto     dttl                  [state]      0.0
+27    proto    spkts                  [state]      0.0
+28    proto   sbytes                  [state]      0.0
+29    proto    dpkts                  [state]      0.0
+30    proto     sttl                  [state]      0.0
+31     dttl    spkts            [sttl, state]      0.0
+32     dttl   sbytes            [sttl, state]      0.0
+33     dttl    dpkts            [sttl, state]      0.0
+34    spkts    dpkts                 [dbytes]      0.0
+35    spkts     sttl                 [dbytes]      0.0
+36   sbytes    dpkts                 [dbytes]      0.0
+37   sbytes     sttl                  [dpkts]      0.0
+2026-01-29 00:39:56 - test_bn - INFO - log_likelihood_score:-1214322.827273616
+2026-01-29 00:39:56 - test_bn - INFO - **************Metrics and Score evalkuation end*****************
+2026-01-29 00:39:56 - test_bn - INFO - **************Parameter Inference*****************
+2026-01-29 00:39:56 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'spkts': 486}) ***********
+2026-01-29 00:39:56 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'spkts': 486}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0655 |
++-----------+-------------+
+| rate(1.0) |      0.0923 |
++-----------+-------------+
+| rate(2.0) |      0.2128 |
++-----------+-------------+
+| rate(3.0) |      0.3781 |
++-----------+-------------+
+| rate(4.0) |      0.2513 |
++-----------+-------------+ ***********
+2026-01-29 00:39:56 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'dbytes': 4}) ***********
+2026-01-29 00:39:56 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'dbytes': 4}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0235 |
++-----------+-------------+
+| rate(1.0) |      0.1145 |
++-----------+-------------+
+| rate(2.0) |      0.0930 |
++-----------+-------------+
+| rate(3.0) |      0.4036 |
++-----------+-------------+
+| rate(4.0) |      0.3654 |
++-----------+-------------+ ***********
+2026-01-29 00:39:56 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3}) ***********
+2026-01-29 00:39:56 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0255 |
++-----------+-------------+
+| rate(1.0) |      0.1478 |
++-----------+-------------+
+| rate(2.0) |      0.1353 |
++-----------+-------------+
+| rate(3.0) |      0.3164 |
++-----------+-------------+
+| rate(4.0) |      0.3750 |
++-----------+-------------+ ***********
+2026-01-29 00:39:56 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3, 'dur': 1}) ***********
+2026-01-29 00:39:56 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3, 'dur': 1}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0000 |
++-----------+-------------+
+| rate(1.0) |      0.0000 |
++-----------+-------------+
+| rate(2.0) |      0.0003 |
++-----------+-------------+
+| rate(3.0) |      0.6518 |
++-----------+-------------+
+| rate(4.0) |      0.3479 |
++-----------+-------------+ ***********
+2026-01-29 00:39:56 - test_bn - INFO - ********** Structural learning: Learn Bayesian network: HillClimb ***********
+2026-01-29 00:39:56 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:39:56 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:39:56 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:39:57 - network_causal_inference.models.structural_learning.hill_climb_learn - INFO - Learned BayesianNetwork_HC_Algo structure with edges=17, nodes=11
+2026-01-29 00:39:57 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:39:57 - test_bn - INFO - ********** Learnt CPD BN Model***********
+ [<TabularCPD representing P(dur:5 | dbytes:5, dttl:4, service:13) at 0x16203a090>,
+ <TabularCPD representing P(rate:5 | dbytes:5, dur:5, sbytes:5) at 0x1620583e0>,
+ <TabularCPD representing P(service:13 | dbytes:5, sbytes:5, sttl:4) at 0x177afdf70>,
+ <TabularCPD representing P(state:11) at 0x162022b10>,
+ <TabularCPD representing P(dbytes:5 | state:11) at 0x1620a61b0>,
+ <TabularCPD representing P(proto:133 | state:11) at 0x177af8b90>,
+ <TabularCPD representing P(dttl:4 | state:11, sttl:4) at 0x177af9760>,
+ <TabularCPD representing P(dpkts:627 | dbytes:5) at 0x1639f4b30>,
+ <TabularCPD representing P(spkts:646 | dbytes:5) at 0x1639f5340>,
+ <TabularCPD representing P(sbytes:5 | spkts:646) at 0x1639f56a0>,
+ <TabularCPD representing P(sttl:4 | dpkts:627) at 0x177ab25a0>]
+2026-01-29 00:39:59 - network_causal_inference.models.structural_learning.bayesian_learning - INFO - Saving to path: /Users/saurabh/codeprojects/causal_relationship_network/data/result/models/dbn_hc_model_hill_climb_28
+2026-01-29 00:39:59 - network_causal_inference.models.structural_learning.bayesian_learning - INFO - ********** Structurl importance: ********** 
+ {'betweenness_centrality': {'dbytes': 0.07222222222222223,
+                            'dpkts': 0.03333333333333333,
+                            'dttl': 0.02777777777777778,
+                            'dur': 0.044444444444444446,
+                            'proto': 0.0,
+                            'rate': 0.0,
+                            'sbytes': 0.03333333333333333,
+                            'service': 0.044444444444444446,
+                            'spkts': 0.022222222222222223,
+                            'state': 0.0,
+                            'sttl': 0.05555555555555556},
+ 'closeness_centrality': {'dbytes': 0.1,
+                          'dpkts': 0.13333333333333333,
+                          'dttl': 0.22857142857142856,
+                          'dur': 0.4266666666666667,
+                          'proto': 0.1,
+                          'rate': 0.45,
+                          'sbytes': 0.15,
+                          'service': 0.39999999999999997,
+                          'spkts': 0.13333333333333333,
+                          'state': 0.0,
+                          'sttl': 0.15},
+ 'degree_centrality': {'dbytes': 0.6000000000000001,
+                       'dpkts': 0.2,
+                       'dttl': 0.30000000000000004,
+                       'dur': 0.4,
+                       'proto': 0.1,
+                       'rate': 0.30000000000000004,
+                       'sbytes': 0.30000000000000004,
+                       'service': 0.4,
+                       'spkts': 0.2,
+                       'state': 0.30000000000000004,
+                       'sttl': 0.30000000000000004}}
+2026-01-29 00:39:59 - test_bn - INFO - ********** Minimal I-map ********** 
+ (dur ⟂ dpkts, sttl, state, spkts, sbytes, proto | service, dttl, dbytes)
+(rate ⟂ dpkts, sttl, state, spkts, service, dttl, proto | sbytes, dur, dbytes)
+(proto ⟂ dpkts, sttl, sbytes, dbytes, dttl, spkts, dur, service, rate | state)
+(service ⟂ dpkts, state, spkts, dttl, proto | sbytes, sttl, dbytes)
+(spkts ⟂ dpkts, sttl, state, dttl, proto | dbytes)
+(dpkts ⟂ spkts, sbytes, state, proto | dbytes)
+(sbytes ⟂ dpkts, sttl, state, dbytes, dttl, proto | spkts)
+(dbytes ⟂ proto | state)
+(sttl ⟂ sbytes, state, spkts, dbytes, proto | dpkts)
+(dttl ⟂ dpkts, sbytes, spkts, dbytes, service, proto | sttl, state)
+2026-01-29 00:39:59 - test_bn - INFO - ********** V-structural immoralities **********
+ {'dbytes': [],
+ 'dpkts': [],
+ 'dttl': [('state', 'sttl')],
+ 'dur': [('dttl', 'service'), ('dbytes', 'dttl')],
+ 'proto': [],
+ 'rate': [('dur', 'sbytes'), ('dbytes', 'sbytes')],
+ 'sbytes': [],
+ 'service': [('dbytes', 'sbytes'), ('sbytes', 'sttl'), ('dbytes', 'sttl')],
+ 'spkts': [],
+ 'state': [],
+ 'sttl': []}
+2026-01-29 00:39:59 - test_bn - INFO - **************Metrics and Score evalkuation start*****************
+2026-01-29 00:40:04 - test_bn - INFO - Fisher_Score:0.0
+2026-01-29 00:40:04 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:40:04 - test_bn - INFO - structure_Score:-3510206.252986488
+2026-01-29 00:40:04 - test_bn - INFO - correlation_score:0.0
+2026-01-29 00:40:06 - test_bn - INFO - conditional_independencies:          u        v                cond_vars  p-value
+0       dur    state  [service, dttl, dbytes]      0.0
+1       dur    proto  [service, dttl, dbytes]      0.0
+2       dur    spkts  [service, dttl, dbytes]      0.0
+3       dur   sbytes  [service, dttl, dbytes]      0.0
+4       dur    dpkts  [service, dttl, dbytes]      0.0
+5       dur     sttl  [service, dttl, dbytes]      0.0
+6      rate  service    [sbytes, dur, dbytes]      0.0
+7      rate    state    [sbytes, dur, dbytes]      0.0
+8      rate    proto                  [state]      0.0
+9      rate     dttl    [sbytes, dur, dbytes]      0.0
+10     rate    spkts         [sbytes, dbytes]      0.0
+11     rate    dpkts    [sbytes, dur, dbytes]      0.0
+12     rate     sttl    [sbytes, dur, dbytes]      0.0
+13  service    state                 [dbytes]      0.0
+14  service    proto                 [dbytes]      0.0
+15  service     dttl           [sttl, dbytes]      0.0
+16  service    spkts         [sbytes, dbytes]      0.0
+17  service    dpkts           [sttl, dbytes]      0.0
+18    state    spkts                 [dbytes]      0.0
+19    state   sbytes                  [spkts]      0.0
+20    state    dpkts                 [dbytes]      0.0
+21    state     sttl                  [dpkts]      0.0
+22   dbytes    proto                  [state]      0.0
+23   dbytes     dttl            [sttl, state]      0.0
+24   dbytes   sbytes                  [spkts]      0.0
+25   dbytes     sttl                  [dpkts]      0.0
+26    proto     dttl                  [state]      0.0
+27    proto    spkts                  [state]      0.0
+28    proto   sbytes                  [state]      0.0
+29    proto    dpkts                  [state]      0.0
+30    proto     sttl                  [state]      0.0
+31     dttl    spkts            [sttl, state]      0.0
+32     dttl   sbytes            [sttl, state]      0.0
+33     dttl    dpkts            [sttl, state]      0.0
+34    spkts    dpkts                 [dbytes]      0.0
+35    spkts     sttl                 [dbytes]      0.0
+36   sbytes    dpkts                 [dbytes]      0.0
+37   sbytes     sttl                  [dpkts]      0.0
+2026-01-29 00:40:10 - test_bn - INFO - log_likelihood_score:-1214322.827273616
+2026-01-29 00:40:10 - test_bn - INFO - **************Metrics and Score evalkuation end*****************
+2026-01-29 00:40:10 - test_bn - INFO - **************Parameter Inference*****************
+2026-01-29 00:40:10 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'spkts': 486}) ***********
+2026-01-29 00:40:10 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'spkts': 486}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0655 |
++-----------+-------------+
+| rate(1.0) |      0.0923 |
++-----------+-------------+
+| rate(2.0) |      0.2128 |
++-----------+-------------+
+| rate(3.0) |      0.3781 |
++-----------+-------------+
+| rate(4.0) |      0.2513 |
++-----------+-------------+ ***********
+2026-01-29 00:40:10 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'dbytes': 4}) ***********
+2026-01-29 00:40:10 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'dbytes': 4}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0235 |
++-----------+-------------+
+| rate(1.0) |      0.1145 |
++-----------+-------------+
+| rate(2.0) |      0.0930 |
++-----------+-------------+
+| rate(3.0) |      0.4036 |
++-----------+-------------+
+| rate(4.0) |      0.3654 |
++-----------+-------------+ ***********
+2026-01-29 00:40:10 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3}) ***********
+2026-01-29 00:40:10 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0255 |
++-----------+-------------+
+| rate(1.0) |      0.1478 |
++-----------+-------------+
+| rate(2.0) |      0.1353 |
++-----------+-------------+
+| rate(3.0) |      0.3164 |
++-----------+-------------+
+| rate(4.0) |      0.3750 |
++-----------+-------------+ ***********
+2026-01-29 00:40:10 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3, 'dur': 1}) ***********
+2026-01-29 00:40:10 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3, 'dur': 1}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0000 |
++-----------+-------------+
+| rate(1.0) |      0.0000 |
++-----------+-------------+
+| rate(2.0) |      0.0003 |
++-----------+-------------+
+| rate(3.0) |      0.6518 |
++-----------+-------------+
+| rate(4.0) |      0.3479 |
++-----------+-------------+ ***********
+2026-01-29 00:40:10 - test_bn - INFO - ********** Structural learning: Learn Bayesian network: HillClimb with K2 ***********
+2026-01-29 00:40:10 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:40:10 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:40:10 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:40:11 - network_causal_inference.models.structural_learning.hill_climb_learn - INFO - Learned BayesianNetwork_HC_Algo structure with edges=19, nodes=11
+2026-01-29 00:40:11 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:41:03 - test_bn - INFO - ********** Learnt CPD BN Model***********
+ [<TabularCPD representing P(dur:5 | dpkts:627, spkts:646) at 0x104e97020>,
+ <TabularCPD representing P(rate:5 | dpkts:627, dur:5) at 0x161f1e8d0>,
+ <TabularCPD representing P(proto:133) at 0x16205e4b0>,
+ <TabularCPD representing P(spkts:646 | dpkts:627, proto:133) at 0x16205e720>,
+ <TabularCPD representing P(dpkts:627 | proto:133, state:11) at 0x16205fce0>,
+ <TabularCPD representing P(state:11 | proto:133) at 0x16205e360>,
+ <TabularCPD representing P(dbytes:5 | dpkts:627, spkts:646) at 0x16205f980>,
+ <TabularCPD representing P(sbytes:5 | dpkts:627, spkts:646) at 0x16205e000>,
+ <TabularCPD representing P(dttl:4 | dpkts:627, spkts:646) at 0x16205ed50>,
+ <TabularCPD representing P(service:13 | dpkts:627, spkts:646) at 0x16205f9b0>,
+ <TabularCPD representing P(sttl:4 | dbytes:5, dttl:4) at 0x16205e180>]
+2026-01-29 00:41:05 - network_causal_inference.models.structural_learning.bayesian_learning - INFO - Saving to path: /Users/saurabh/codeprojects/causal_relationship_network/data/result/models/dbn_hc_model_hill_climb_k2_28
+2026-01-29 00:42:08 - network_causal_inference.models.structural_learning.bayesian_learning - INFO - ********** Structurl importance: ********** 
+ {'betweenness_centrality': {'dbytes': 0.022222222222222223,
+                            'dpkts': 0.13333333333333333,
+                            'dttl': 0.022222222222222223,
+                            'dur': 0.011111111111111112,
+                            'proto': 0.0,
+                            'rate': 0.0,
+                            'sbytes': 0.0,
+                            'service': 0.0,
+                            'spkts': 0.03333333333333333,
+                            'state': 0.0,
+                            'sttl': 0.0},
+ 'closeness_centrality': {'dbytes': 0.26666666666666666,
+                          'dpkts': 0.2,
+                          'dttl': 0.26666666666666666,
+                          'dur': 0.26666666666666666,
+                          'proto': 0.0,
+                          'rate': 0.3125,
+                          'sbytes': 0.26666666666666666,
+                          'service': 0.26666666666666666,
+                          'spkts': 0.22499999999999998,
+                          'state': 0.1,
+                          'sttl': 0.3},
+ 'degree_centrality': {'dbytes': 0.30000000000000004,
+                       'dpkts': 0.9,
+                       'dttl': 0.30000000000000004,
+                       'dur': 0.30000000000000004,
+                       'proto': 0.30000000000000004,
+                       'rate': 0.2,
+                       'sbytes': 0.2,
+                       'service': 0.2,
+                       'spkts': 0.7000000000000001,
+                       'state': 0.2,
+                       'sttl': 0.2}}
+2026-01-29 00:42:08 - test_bn - INFO - ********** Minimal I-map ********** 
+ (dur ⟂ sttl, state, sbytes, dbytes, service, dttl, proto | spkts, dpkts)
+(rate ⟂ sttl, dbytes, dttl, proto, state, spkts, sbytes, service | dpkts, dur)
+(service ⟂ sttl, sbytes, dbytes, dttl, proto, state, dur, rate | spkts, dpkts)
+(spkts ⟂ state | dpkts, proto)
+(sbytes ⟂ sttl, dbytes, dttl, proto, state, dur, service, rate | spkts, dpkts)
+(dbytes ⟂ state, sbytes, dur, service, rate, dttl, proto | spkts, dpkts)
+(sttl ⟂ dpkts, sbytes, proto, state, spkts, dur, service, rate | dbytes, dttl)
+(dttl ⟂ state, proto, sbytes, dur, service, rate, dbytes | spkts, dpkts)
+2026-01-29 00:42:08 - test_bn - INFO - ********** V-structural immoralities **********
+ {'dbytes': [],
+ 'dpkts': [],
+ 'dttl': [],
+ 'dur': [],
+ 'proto': [],
+ 'rate': [],
+ 'sbytes': [],
+ 'service': [],
+ 'spkts': [],
+ 'state': [],
+ 'sttl': [('dbytes', 'dttl')]}
+2026-01-29 00:42:08 - test_bn - INFO - **************Metrics and Score evalkuation start*****************
+2026-01-29 00:42:22 - test_bn - INFO - Fisher_Score:0.0
+2026-01-29 00:42:22 - pgmpy - INFO -  Datatype (N=numerical, C=Categorical Unordered, O=Categorical Ordered) inferred from data: 
+ {'dur': 'N', 'rate': 'N', 'proto': 'N', 'service': 'N', 'state': 'N', 'spkts': 'N', 'dpkts': 'N', 'sbytes': 'N', 'dbytes': 'N', 'sttl': 'N', 'dttl': 'N'}
+2026-01-29 00:42:22 - test_bn - INFO - structure_Score:-3526892.6292717485
+2026-01-29 00:42:23 - test_bn - INFO - correlation_score:0.0
+2026-01-29 00:42:33 - test_bn - INFO - conditional_independencies:          u        v       cond_vars  p-value
+0       dur    proto  [spkts, dpkts]      0.0
+1       dur    state  [proto, dpkts]      0.0
+2       dur   dbytes  [spkts, dpkts]      0.0
+3       dur   sbytes  [spkts, dpkts]      0.0
+4       dur     dttl  [spkts, dpkts]      0.0
+5       dur  service  [spkts, dpkts]      0.0
+6       dur     sttl  [dbytes, dttl]      0.0
+7      rate    proto    [dpkts, dur]      0.0
+8      rate    spkts    [dpkts, dur]      0.0
+9      rate    state  [dpkts, proto]      0.0
+10     rate   dbytes  [dpkts, spkts]      0.0
+11     rate   sbytes  [dpkts, spkts]      0.0
+12     rate     dttl  [dpkts, spkts]      0.0
+13     rate  service  [dpkts, spkts]      0.0
+14     rate     sttl  [dttl, dbytes]      0.0
+15    proto   dbytes  [spkts, dpkts]      0.0
+16    proto   sbytes  [spkts, dpkts]      0.0
+17    proto     dttl  [spkts, dpkts]      0.0
+18    proto  service  [spkts, dpkts]      0.0
+19    proto     sttl  [dbytes, dttl]      0.0
+20    spkts    state  [dpkts, proto]      0.0
+21    spkts     sttl  [dbytes, dttl]      0.0
+22    dpkts     sttl  [dttl, dbytes]      0.0
+23    state   dbytes  [dpkts, proto]      0.0
+24    state   sbytes  [dpkts, proto]      0.0
+25    state     dttl  [dpkts, proto]      0.0
+26    state  service  [dpkts, proto]      0.0
+27    state     sttl  [dbytes, dttl]      0.0
+28   dbytes   sbytes  [spkts, dpkts]      0.0
+29   dbytes     dttl  [spkts, dpkts]      0.0
+30   dbytes  service  [spkts, dpkts]      0.0
+31   sbytes     dttl  [spkts, dpkts]      0.0
+32   sbytes  service  [spkts, dpkts]      0.0
+33   sbytes     sttl  [dbytes, dttl]      0.0
+34     dttl  service  [spkts, dpkts]      0.0
+35  service     sttl  [dbytes, dttl]      0.0
+2026-01-29 00:42:39 - test_bn - INFO - log_likelihood_score:-919464.5708826468
+2026-01-29 00:42:39 - test_bn - INFO - **************Metrics and Score evalkuation end*****************
+2026-01-29 00:42:39 - test_bn - INFO - **************Parameter Inference*****************
+2026-01-29 00:42:39 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'spkts': 486}) ***********
+2026-01-29 00:42:39 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'spkts': 486}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0165 |
++-----------+-------------+
+| rate(1.0) |      0.1123 |
++-----------+-------------+
+| rate(2.0) |      0.5599 |
++-----------+-------------+
+| rate(3.0) |      0.3110 |
++-----------+-------------+
+| rate(4.0) |      0.0003 |
++-----------+-------------+ ***********
+2026-01-29 00:42:39 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'dbytes': 4}) ***********
+2026-01-29 00:42:40 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'dbytes': 4}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0210 |
++-----------+-------------+
+| rate(1.0) |      0.1194 |
++-----------+-------------+
+| rate(2.0) |      0.1129 |
++-----------+-------------+
+| rate(3.0) |      0.3708 |
++-----------+-------------+
+| rate(4.0) |      0.3759 |
++-----------+-------------+ ***********
+2026-01-29 00:42:40 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3}) ***********
+2026-01-29 00:42:40 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0201 |
++-----------+-------------+
+| rate(1.0) |      0.1318 |
++-----------+-------------+
+| rate(2.0) |      0.0832 |
++-----------+-------------+
+| rate(3.0) |      0.2476 |
++-----------+-------------+
+| rate(4.0) |      0.5173 |
++-----------+-------------+ ***********
+2026-01-29 00:42:40 - test_bn - INFO - ********** Inferrene starting for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3, 'dur': 1}) ***********
+2026-01-29 00:42:41 - test_bn - INFO - ********** Inferrene for network congestion/degradation for p(['rate'] | {'dbytes': 4, 'sbytes': 3, 'dur': 1}) is +-----------+-------------+
+| rate      |   phi(rate) |
++===========+=============+
+| rate(0.0) |      0.0000 |
++-----------+-------------+
+| rate(1.0) |      0.0000 |
++-----------+-------------+
+| rate(2.0) |      0.0001 |
++-----------+-------------+
+| rate(3.0) |      0.6647 |
++-----------+-------------+
+| rate(4.0) |      0.3351 |
++-----------+-------------+ ***********
+2026-01-29 00:42:41 - test_bn - INFO - 
++------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GES              | {'edges': 17, 'nodes': 11, 'fisher_score': np.float64(0.0), 'structure_score': np.float64(-3510206.252986488), 'correlation_score': 0.0, 'log_likelihood_score': np.float64(-1214322.827273616)}  |
++------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Hill Climbing    | {'edges': 17, 'nodes': 11, 'fisher_score': np.float64(0.0), 'structure_score': np.float64(-3510206.252986488), 'correlation_score': 0.0, 'log_likelihood_score': np.float64(-1214322.827273616)}  |
++------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Hill Climbing K2 | {'edges': 19, 'nodes': 11, 'fisher_score': np.float64(0.0), 'structure_score': np.float64(-3526892.6292717485), 'correlation_score': 0.0, 'log_likelihood_score': np.float64(-919464.5708826468)} |
++------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+

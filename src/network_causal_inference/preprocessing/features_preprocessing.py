@@ -30,6 +30,7 @@ def discretize_features(df: DataFrame, continuous_feature_set: list, kn_bins=5) 
     if continuous_features_cols:
         logger.info('Discretize data for continuous feature: %s', continuous_features_cols)
         discretizer = KBinsDiscretizer(encode='ordinal', strategy='quantile')
+        # discretizer = KBinsDiscretizer(encode='ordinal', strategy='quantile',n_bins=5)
         df[continuous_features_cols] = discretizer.fit_transform(df[continuous_features_cols])
     return df
     # return df.astype(int)

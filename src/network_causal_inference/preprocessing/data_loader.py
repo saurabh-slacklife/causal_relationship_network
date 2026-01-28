@@ -2,6 +2,7 @@ import glob
 import os
 
 import pandas as pd
+from pandas.api.types import is_numeric_dtype
 from pandas import DataFrame
 import numpy as np
 import logging
@@ -23,7 +24,7 @@ def describe_data(df: DataFrame):
         categorical_dtype_count = 0
 
         for column_name, data_type in df_data_types.items():
-            if np.issubdtype(data_type, np.number):
+            if is_numeric_dtype(data_type):
                 numerical_dtype_count += 1
             else:
                 categorical_dtype_count += 1
