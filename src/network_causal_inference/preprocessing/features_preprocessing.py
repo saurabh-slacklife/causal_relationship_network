@@ -43,5 +43,7 @@ def encode_categorical_features(df: DataFrame, categorical_feature_set: list) ->
             le = LabelEncoder()
             df[categorical_feature] = le.fit_transform(df[categorical_feature])
             label_encoders[categorical_feature] = le
+            label_mapping = dict(zip(le.classes_, range(len(le.classes_))))
+            logger.info('******** Label encoding mapping for feature set: %s *****\n label_mapping:%s', categorical_feature,label_mapping)
 
     return label_encoders

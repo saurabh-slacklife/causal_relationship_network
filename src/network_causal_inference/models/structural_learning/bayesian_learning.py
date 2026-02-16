@@ -4,7 +4,7 @@ from pgmpy.base import DAG
 from network_causal_inference.config.common_enums import BayesianAlgorithm, ScoringEstimatorClass, PriorType
 from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.estimators import ParameterEstimator, BayesianEstimator
-from pgmpy.inference import Inference, VariableElimination, CausalInference
+from pgmpy.inference import Inference, VariableElimination, CausalInference, BeliefPropagation
 import networkx as nx
 import pandas as pd
 import warnings
@@ -74,6 +74,10 @@ def compute_structural_importance(dbn_model: DiscreteBayesianNetwork) -> dict:
 
 def network_congestion_learning(dbn_model: DiscreteBayesianNetwork, variables: list, evidence: dict) -> DiscreteFactor:
     infered_dbn_model=CausalInference(dbn_model)
+    return infered_dbn_model.query(variables=variables,evidence=evidence,show_progress=True)
+
+def network_congestion_learning_bp(dbn_model: DiscreteBayesianNetwork, variables: list, evidence: dict) -> DiscreteFactor:
+    infered_dbn_model=BeliefPropagation(dbn_model)
     return infered_dbn_model.query(variables=variables,evidence=evidence,show_progress=True)
 
 def check_model_for_errors(dbn_model: DiscreteBayesianNetwork) -> bool:

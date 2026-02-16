@@ -18,7 +18,6 @@ import logging
 from datetime import datetime
 import pprint
 
-
 log_filename = datetime.now().strftime('causal_inference_log_%H-%M-%S-%d-%m-%Y.log')
 
 logging.basicConfig(
@@ -37,13 +36,14 @@ required_feature_set = ['dur', 'rate', 'proto', 'service', 'state', 'spkts', 'dp
 
 def inference_queries(cpd_learnt_bn_model, q_variables, q_evidence):
     logger.info(
-        '********** Inferrene starting for network congestion/degradation for p(%s | %s) ***********', q_variables, q_evidence)
+        '********** inference starting for network congestion/degradation for p(%s | %s) ***********', q_variables, q_evidence)
     nw_congestion_cpd = bn_learning.network_congestion_learning(cpd_learnt_bn_model, variables=q_variables,
                                                                 evidence=q_evidence)
-    logger.info('********** Inferrene for network congestion/degradation for p(%s | %s) is %s ***********', q_variables, q_evidence,
+    logger.info('********** inference for network congestion/degradation for p(%s | %s) is %s ***********', q_variables, q_evidence,
                 nw_congestion_cpd)
 
 def feature_processing() -> DataFrame:
+        logger.info('********** Start Feature Processing ***********')
         logger.info('********** Load data ***********')
         # feature_set_df = load_data(path='../../../data/features/',encoding='cp1252')
         df = load_data()
@@ -71,7 +71,11 @@ def feature_processing() -> DataFrame:
 
         logger.info('********** Label encoders *********** %s', label_encoders)
         describe_data(df)
+        for feature_name, feature_dtype in df.dtypes.items():
+            unique_values = df[feature_name].unique()
+            logger.info('********** Unique Values for feature: %s, DataType: %s *********** %s', feature_name, feature_dtype, unique_values)
 
+        logger.info('********** Finished Feature Processing ***********')
         return df
 
 class Test(TestCase):
@@ -170,7 +174,7 @@ class Test(TestCase):
         #     )
         #     logger.info('********** Inferred CPDs BN Model for %s: %s ***********',feature, cpds)
 
-    @unittest.skip("Can't run in parallel, execute serially")
+    # @unittest.skip("Can't run in parallel, execute serially")
     def test_learn_bn_mm_hill_climb(self):
         # df = feature_processing()
         df = self.initial_df.copy()
@@ -220,7 +224,7 @@ class Test(TestCase):
         #     )
         #     logger.info('********** Inferred CPDs BN Model for %s: %s ***********',feature, cpds)
 
-    @unittest.skip("Can't run in parallel, execute serially")
+    # @unittest.skip("Can't run in parallel, execute serially")
     def test_learn_bn_pc(self):
         # df = feature_processing()
         df = self.initial_df.copy()
@@ -229,7 +233,7 @@ class Test(TestCase):
 
         visualize_network(dbn_pc_model, save_path='../../../data/result/network_pc_28.png',name='PC')
 
-        bn_learning.save_model(dbn_model=dbn_pc_model, file_name='dbn_pc_model_pc_28')
+        # bn_learning.save_model(dbn_model=dbn_pc_model, file_name='dbn_pc_model_pc_28')
 
         bn_learning.compute_structural_importance(dbn_pc_model)
 
@@ -252,30 +256,26 @@ class Test(TestCase):
         conditional_independencies_df = compute_metrics.compute_conditional_independencies(model=dbn_pc_model, data=df)
         logger.info('conditional_independencies:%s', conditional_independencies_df)
 
-        log_likelihood_score = compute_metrics.compute_log_likelihood(model=dbn_pc_model,
-                                                                                           data=df)
-        logger.info('log_likelihood_score:%s', log_likelihood_score)
-
         logger.info('**************Metrics and Score evalkuation end*****************')
 
 
         logger.info('**************Parameter Inference*****************')
 
-        # q_variables = ['rate']
-        # q_evidence = {'spkts': 486}
-        # inference_queries(cpd_learnt_bn_model, q_variables,q_evidence)
-        #
-        # q_variables = ['rate']
-        # q_evidence = {'dbytes': 4}
-        # inference_queries(cpd_learnt_bn_model, q_variables, q_evidence)
-        #
-        # q_variables = ['rate']
-        # q_evidence = {'dbytes': 4, 'sbytes': 3}
-        # inference_queries(cpd_learnt_bn_model, q_variables, q_evidence)
-        #
-        # q_variables = ['rate']
-        # q_evidence = {'dbytes': 4, 'sbytes': 3, 'dur': 1}
-        # inference_queries(cpd_learnt_bn_model, q_variables, q_evidence)
+        q_variables = ['rate']
+        q_evidence = {'spkts': 486}
+        inference_queries(dbn_pc_model, q_variables,q_evidence)
+
+        q_variables = ['rate']
+        q_evidence = {'dbytes': 4}
+        inference_queries(dbn_pc_model, q_variables, q_evidence)
+
+        q_variables = ['rate']
+        q_evidence = {'dbytes': 4, 'sbytes': 3}
+        inference_queries(dbn_pc_model, q_variables, q_evidence)
+
+        q_variables = ['rate']
+        q_evidence = {'dbytes': 4, 'sbytes': 3, 'dur': 1}
+        inference_queries(dbn_pc_model, q_variables, q_evidence)
 
         # for feature in required_feature_set:
         #     logger.info('********** Inferrene starting for %s ***********', feature)
@@ -425,21 +425,22 @@ class Test(TestCase):
 
         logger.info('**************Parameter Inference*****************')
 
-        q_variables = ['rate']
-        q_evidence = {'spkts': 486}
+
+        q_variables = ['dur']
+        q_evidence = {'dbytes': 4,'dttl':1,'service':5}
         inference_queries(cpd_learnt_bn_model, q_variables,q_evidence)
 
         q_variables = ['rate']
-        q_evidence = {'dbytes': 4}
+        q_evidence = {'dbytes': 4,'dur':2,'sbytes':2,}
         inference_queries(cpd_learnt_bn_model, q_variables, q_evidence)
-
-        q_variables = ['rate']
-        q_evidence = {'dbytes': 4, 'sbytes': 3}
-        inference_queries(cpd_learnt_bn_model, q_variables, q_evidence)
-
-        q_variables = ['rate']
-        q_evidence = {'dbytes': 4, 'sbytes': 3, 'dur': 1}
-        inference_queries(cpd_learnt_bn_model, q_variables, q_evidence)
+        #
+        # q_variables = ['rate']
+        # q_evidence = {'dbytes': 4, 'sbytes': 3}
+        # inference_queries(cpd_learnt_bn_model, q_variables, q_evidence)
+        #
+        # q_variables = ['rate']
+        # q_evidence = {'dbytes': 4, 'sbytes': 3, 'dur': 1}
+        # inference_queries(cpd_learnt_bn_model, q_variables, q_evidence)
 
         # for feature in required_feature_set:
         #     logger.info('********** Inferrene starting for %s ***********', feature)
